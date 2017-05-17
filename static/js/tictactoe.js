@@ -17,15 +17,15 @@ const winningCombinations = [
 var winner = null;
 
 function checkForWinner() {
-	const squares = document.querySelectorAll('button');	
-	for(let i = 0; i < winningCombinations.length; i++) {
-		let [a, b, c] = winningCombinations[i];
-		if (squares[a].innerHTML && 
-			squares[a].innerHTML === squares[b].innerHTML && 
+	let squares = document.querySelectorAll('button');
+	winningCombinations.forEach(function(combo) {
+		let [a, b, c] = combo;
+		if (squares[a].innerHTML &&
+			squares[a].innerHTML === squares[b].innerHTML &&
 			squares[b].innerHTML === squares[c].innerHTML) {
 			winner = squares[a].innerHTML;
 		}
-	}
+	})
 }
 
 function handleSquareClick(square) {

@@ -4,7 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "coffee-script": "^1.12.6",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "express.io": "^1.1.13"
