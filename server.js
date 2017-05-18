@@ -9,6 +9,8 @@ app.get('/', function(req, res) {
 
 app.use(express.static(__dirname + '/static'));
 
+var playerCount = 0;
+
 io.on('connection', function(socket) {
 	console.log('User connected');
 
@@ -17,7 +19,16 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('player move', function(squareIndex) {
-		io.emit('player move', squareIndex);
+		if (playerCount >= 2) {
+			io.emit('player move', squareIndex);
+		}
+	});
+
+	socket.on('login', function(username) {
+		let playerNumber = playerCount + 1;
+		playerCount++;
+		socket.username = username;
+		io.emit('login', username, playerNumber);
 	});
 
 });

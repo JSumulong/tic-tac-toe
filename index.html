@@ -23,7 +23,17 @@
 			<button onclick="handleSquareClick(this)"></button>
 			<button onclick="handleSquareClick(this)"></button>
 		</div>
-		<!-- <button onclick="tryIt()">test</button> -->
+	</div>
+	<div class="players-sidebar">
+		<h3>Players in Room:</h3>
+		<ul>
+			<li id="player1"></li>
+			<li id="player2"></li>
+		</ul>
+	</div>
+	<div id="register">
+		<input type="text" name="username" placeholder="username">
+		<button onclick="userLogin()">Register</button>
 	</div>
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
