@@ -16,8 +16,9 @@ const winningCombinations = [
 
 var winner = null;
 
+const squares = document.querySelectorAll('button');
+
 function checkForWinner() {
-	let squares = document.querySelectorAll('button');
 	winningCombinations.forEach(function(combo) {
 		let [a, b, c] = combo;
 		if (squares[a].innerHTML &&
@@ -33,11 +34,20 @@ function handleSquareClick(square) {
 		playerXTurn ? square.innerHTML = 'X' : square.innerHTML = 'O';
 		playerXTurn = !playerXTurn;
 		playerXTurn ? displayTurn.innerHTML = "It's player X's turn" : displayTurn.innerHTML = "It's player O's turn";
+
+		// send index of square through socket
+		let squareIndex = Array.prototype.indexOf.call(squares, square);
+		socket.emit('player move', squareIndex);
 	}
+	
 	checkForWinner();
 	if (winner) { displayTurn.innerHTML = `Player ${winner} wins!` }
 }
 
+socket.on('player move', function(squareIndex) {
+	let square = squares[squareIndex];
+	handleSquareClick(square);
+});
 
 
 

@@ -1,25 +1,27 @@
-var express = require('express.io');
+var express = require('express');
 var app = express();
-app.http().io();
-var PORT = 8080;
-console.log('server started on port ' + PORT);
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+app.get('/', function(req, res) {
+	res.sendFile(__dirname + '/index.html');
+});
 
 app.use(express.static(__dirname + '/static'));
 
-app.get('/', function(req, res){
-	res.render('index.ejs');
+io.on('connection', function(socket) {
+	console.log('User connected');
+
+	socket.on('disconnect', function() {
+		console.log('User disconnected');
+	});
+
+	socket.on('player move', function(squareIndex) {
+		io.emit('player move', squareIndex);
+	});
+
 });
 
-app.listen(process.env.PORT || PORT);
-
-app.io.route('ready', function(req) {
-	req.io.join(req.data.signal_room);
-})
-
-app.io.route('signal', function(req) {
-	//Note the use of req here for broadcasting so only the sender doesn't receive their own messages
-	req.io.room(req.data.room).broadcast('signaling_message', {
-        type: req.data.type,
-		message: req.data.message
-    });
-})
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
