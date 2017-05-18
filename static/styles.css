@@ -1,14 +1,11 @@
 body {
 	background-color: black;
 	font-family: 'Press Start 2P', cursive;
+	color: green;
 }
 
 h1 {
 	font-size: 20px;
-}
-
-#turn {
-	color: green;
 }
 
 #board {
