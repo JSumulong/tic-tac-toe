@@ -16,6 +16,8 @@ const winningCombinations = [
 
 var winner = null;
 
+var player;
+
 const squares = document.querySelectorAll('button');
 
 function checkForWinner() {
@@ -30,7 +32,8 @@ function checkForWinner() {
 }
 
 function handleSquareClick(square) {
-	if (!square.innerHTML && !winner) {
+	let player2 = document.getElementById('player2').innerHTML;
+	if (!square.innerHTML && !winner && player2 != "") {
 		playerXTurn ? square.innerHTML = 'X' : square.innerHTML = 'O';
 		playerXTurn = !playerXTurn;
 		playerXTurn ? displayTurn.innerHTML = "It's player X's turn" : displayTurn.innerHTML = "It's player O's turn";
@@ -39,15 +42,31 @@ function handleSquareClick(square) {
 		let squareIndex = Array.prototype.indexOf.call(squares, square);
 		socket.emit('player move', squareIndex);
 	}
-	
+
 	checkForWinner();
 	if (winner) { displayTurn.innerHTML = `Player ${winner} wins!` }
 }
+
+function userLogin() {
+	let username = document.querySelector('input').value;
+	let registerDiv = document.getElementById('register');
+	if (username != "") {
+		socket.emit('login', username);
+		registerDiv.style.display = "none";
+	}
+}
+
+socket.on('login', function(username, playerNumber) {
+	let li = document.getElementById(`player${playerNumber}`);
+	li.innerHTML = username;
+});
 
 socket.on('player move', function(squareIndex) {
 	let square = squares[squareIndex];
 	handleSquareClick(square);
 });
+
+
 
 
 
