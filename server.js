@@ -25,10 +25,12 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('login', function(username) {
+		let playerAndUsername;
 		let playerNumber = playerCount + 1;
 		playerCount++;
 		socket.username = username;
-		io.emit('login', username, playerNumber);
+		playerCount === 1 ? playerAndUsername = `Player X: ${username}` : playerAndUsername = `Player O: ${username}`;
+		io.emit('login', playerAndUsername, playerNumber);
 	});
 
 });
