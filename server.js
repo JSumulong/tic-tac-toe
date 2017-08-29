@@ -25,8 +25,8 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('login', function(username) {
-		let playerAndUsername;
 		let playerNumber = playerCount + 1;
+		let playerAndUsername;
 		playerCount++;
 		socket.username = username;
 		playerCount === 1 ? playerAndUsername = `Player X: ${username}` : playerAndUsername = `Player O: ${username}`;
