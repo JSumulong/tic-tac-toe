@@ -1,7 +1,10 @@
+var player;
+var winner = null;
 var playerXTurn = true;
-
+const squares = document.querySelectorAll('button');
 var displayTurn = document.querySelector('#turn');
 displayTurn.innerHTML = "It's player X's turn";
+
 
 const winningCombinations = [
 	[0, 1, 2],
@@ -14,11 +17,8 @@ const winningCombinations = [
 	[2, 4, 6]
 ];
 
-var winner = null;
 
-var player;
 
-const squares = document.querySelectorAll('button');
 
 function checkForWinner() {
 	winningCombinations.forEach(function(combo) {
@@ -31,7 +31,13 @@ function checkForWinner() {
 	})
 }
 
-function handleSquareClick(square) {
+function handlePlayerClick(square) {
+	if (playerXTurn && player === 'O') return;
+	if (!playerXTurn && player === 'X') return;
+	handleMove(square);
+}
+
+function handleMove(square) {
 	let player2 = document.getElementById('player2').innerHTML;
 	if (!square.innerHTML && !winner && player2 != "") {
 		playerXTurn ? square.innerHTML = 'X' : square.innerHTML = 'O';
@@ -50,9 +56,11 @@ function handleSquareClick(square) {
 function userLogin() {
 	let username = document.querySelector('input').value;
 	let registerDiv = document.getElementById('register');
+	let player1Name = document.getElementById('player1');
 	if (username != "") {
 		socket.emit('login', username);
 		registerDiv.style.display = "none";
+		player1Name.innerHTML ? player = 'O' : player = 'X';
 	}
 }
 
@@ -63,7 +71,7 @@ socket.on('login', function(username, playerNumber) {
 
 socket.on('player move', function(squareIndex) {
 	let square = squares[squareIndex];
-	handleSquareClick(square);
+	handleMove(square);
 });
 
 
