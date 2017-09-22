@@ -31,7 +31,13 @@ function checkForWinner() {
 	})
 }
 
-function handleSquareClick(square) {
+function handlePlayerClick(square) {
+	if (playerXTurn && player === 'O') return;
+	if (!playerXTurn && player === 'X') return;
+	handleMove(square);
+}
+
+function handleMove(square) {
 	let player2 = document.getElementById('player2').innerHTML;
 	if (!square.innerHTML && !winner && player2 != "") {
 		playerXTurn ? square.innerHTML = 'X' : square.innerHTML = 'O';
@@ -65,7 +71,7 @@ socket.on('login', function(username, playerNumber) {
 
 socket.on('player move', function(squareIndex) {
 	let square = squares[squareIndex];
-	handleSquareClick(square);
+	handleMove(square);
 });
 
 
